@@ -121,17 +121,24 @@ python hydrate.py --query "审计合约" --no-global
 
 ## 安装使用
 
-将 `skills/` 下的 4 个 Skill 目录复制到你的项目或用户 Skills 目录：
+```bash
+# 一条命令：自动检测目标 skills 目录并安装
+python install.py
 
-```
-your-project/.codex/skills/prompt-craft/
-your-project/.codex/skills/prompt-memory/
-your-project/.codex/skills/prompt-techniques/
-your-project/.codex/skills/prompt-review/
+# 可选参数：
+#   python install.py --target /path/to/skills   # 指定目标目录
+#   python install.py --symlink                  # 开发模式（修改源文件即时生效）
+#   python install.py --init-global              # 同时创建 ~/.promptcraft/
+#   python install.py --list                     # 预览（不执行）
+#   python install.py --uninstall                # 卸载
+#   python install.py --check-update             # 检查是否有新版本
 ```
 
-脚本默认以 `.promptcraft/` 为 vault 根目录，`.codex/skills/prompt-memory/scripts/`
-为脚本路径。可通过 `--vault` / `--prompts-dir` 覆盖。
+安装器自动检测 `~/.claude/skills/` → `~/.codex/skills/` →
+`~/.codebuddy/skills/`（第一个存在的）。使用 `--target` 手动指定。
+
+脚本默认以 `.promptcraft/` 为 vault 根目录。可通过 checkpoint.py / hydrate.py
+的 `--vault` / `--prompts-dir` 覆盖。
 
 在 CodeBuddy / Codex / Claude Code 对话中：
 

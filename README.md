@@ -124,19 +124,24 @@ python hydrate.py --query "audit contract" --no-global
 
 ## Install & Use
 
-Copy the 4 Skill directories from `skills/` into your project or user
-Skills directory (e.g. `.codex/skills/` for CodeBuddy):
+```bash
+# One command: auto-detects target skills directory and installs
+python install.py
 
-```
-your-project/.codex/skills/prompt-craft/
-your-project/.codex/skills/prompt-memory/
-your-project/.codex/skills/prompt-techniques/
-your-project/.codex/skills/prompt-review/
+# Options:
+#   python install.py --target /path/to/skills   # explicit target
+#   python install.py --symlink                  # dev mode (edit source → live update)
+#   python install.py --init-global              # also create ~/.promptcraft/
+#   python install.py --list                     # dry-run
+#   python install.py --uninstall                # remove
+#   python install.py --check-update             # check for newer version
 ```
 
-The scripts default to `.promptcraft/` as the vault root and
-`.codex/skills/prompt-memory/scripts/` as the scripts path. Override via
-`--vault` / `--prompts-dir` flags.
+The installer auto-detects `~/.claude/skills/` → `~/.codex/skills/` →
+`~/.codebuddy/skills/` (first existing wins). Use `--target` to override.
+
+The scripts default to `.promptcraft/` as the vault root. Override via
+`--vault` / `--prompts-dir` flags on checkpoint.py / hydrate.py.
 
 Then, in a CodeBuddy / Codex / Claude Code chat:
 
