@@ -80,7 +80,7 @@ Step 0b: hydrate.py → 自动合并全局 + 项目 vault；
 Step 1: LLM Router → 独立性×认知复杂度 → 选择技巧
 Step 2: 读取技巧详情 → 获取 method_steps + design_rules
 Step 2.5: 条件案例生成 → 仅当用户提供领域知识时生成
-Step 3: 构建增强提示词 → 8 节结构 + 已确认案例
+Step 3: 构建增强提示词 → 自适应深度结构（按认知负荷 ≤3 / 5-7 / 8 段）
 Step 4: checkpoint.py → 保存到项目 vault（或 --global 写全局）
 Step 5: 行动选择
         ├── 🚀 立即执行 → 执行 → 分析输出 → 结构化反馈写回 vault

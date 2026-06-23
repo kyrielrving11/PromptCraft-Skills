@@ -81,7 +81,7 @@ Step 0b: hydrate.py → auto-merges global + project vaults;
 Step 1: LLM Router → independence × cognitive load → select technique
 Step 2: Read technique details → load method_steps + design_rules from references/
 Step 2.5: Conditional Case Generation → only when user provides domain knowledge
-Step 3: Build enhanced prompt → 8-section structure with approved cases
+Step 3: Build enhanced prompt → adaptive-depth structure (≤3 / 5-7 / 8 sections by cognitive load)
 Step 4: checkpoint.py → save to project vault (or --global for cross-project)
 Step 5: Action selection
         ├── 🚀 Execute now   → execute → analyze output → feedback written back

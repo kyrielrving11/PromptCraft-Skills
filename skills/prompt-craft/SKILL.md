@@ -227,26 +227,57 @@ Construct a complete, enhanced prompt following the selected technique's
 method steps. Embed the cases — either those generated from user-provided
 domain knowledge in Step 2.5, or examples the user supplies now.
 
-### REQUIRED Structure (this exact order)
+### Adaptive Structure Depth
 
-The final prompt MUST follow this section order — verified against MCP-era
-high-quality outputs:
+Match section count to the cognitive-load level determined in Step 1. Do NOT
+force all 8 sections onto simple tasks — bloat degrades prompt quality.
 
-1. **角色 (Role)** — A clear, specific role assignment. Include domain and tech stack.
-2. **任务 (Task)** — The user's intent, stated unambiguously. One sentence.
-3. **输入 (Input)** — The target data, code, file, or scenario the model will operate on.
-4. **输出格式 (Output Format)** — Numbered list of concrete deliverables (e.g., "1. DDL, 2. API interface, 3. Core logic, 4. Validation, 5. Tests").
-5. **格式参考示例 (Format Reference Examples)** — Cases from Step 2.5 (if generated from user domain knowledge) or user-provided examples. For Few-Shot: 2-3 input→output pairs with mapping rules. For CoT: input→reasoning→output triples. For Step-Back: stepback question + abstraction principles. For Least-to-Most: ordered subproblems with dependencies. For ToT: candidate branches + evaluation criteria. If neither source is available, leave this section as `[待用户填写]` and ask the user to provide examples.
-6. **具体实现要求 (Detailed Implementation Requirements)** — Numbered subsections, one per deliverable from the Output Format. Each subsection specifies exactly what to implement: data models, API signatures, business logic flow, edge cases, code structure.
-7. **硬约束 (Hard Constraints)** — Numbered, non-negotiable rules. Include tech stack, frameworks, validation ranges, code style, and constraints from the vault.
-8. **生成要求 (Generation Requirements)** — Numbered final acceptance criteria: what "done" means, quality gates, format compliance rules.
+#### Low Cognitive Load — Minimal (≤3 sections)
 
-### CRITICAL Rules
+For simple changes: rename, format, add comments, config tweaks, hello-world pages.
 
-- **Never** put examples/cases before Input — the model needs to know what to operate on before seeing how others did it.
-- **Never** use meta-examples (examples of prompt design). Cases in section 5 must be examples of the **desired output** — real input→output pairs that show what the generated code/result should look like.
-- **For Few-Shot**: the examples in section 5 are task-domain examples (e.g., API request→response pairs), NOT examples of how to write a prompt.
-- After construction, run through the checklist in `references/prompt-structure-checklist.md` before presenting to the user.
+| # | Section | Rule |
+|---|---------|------|
+| 1 | **任务 (Task)** | One sentence. The user's intent. |
+| 2 | **输入 (Input)** | The target code, file, or scenario. |
+| 3 | **硬约束 (Hard Constraints)** | Only if there are real constraints (tech stack, versions). Omit the entire section if there is nothing to constrain. |
+
+Role is unnecessary here — adding one is noise. Output format, examples, detailed requirements, and generation requirements are overkill for a one-line fix.
+
+#### Medium Cognitive Load — Standard (5-7 sections)
+
+For structured work with fixed patterns: CRUD endpoints, standard unit tests,
+boilerplate data models, routine refactoring.
+
+| # | Section | Rule |
+|---|---------|------|
+| 1 | **角色 (Role)** | Specific role with domain and tech stack. |
+| 2 | **任务 (Task)** | One sentence. |
+| 3 | **输入 (Input)** | Target data, code, or scenario. |
+| 4 | **输出格式 (Output Format)** | Numbered list of concrete deliverables. |
+| 5 | **格式参考示例 (Format Reference Examples)** | Only if cases were generated (Step 2.5) or supplied by user. If neither source is available, skip this section — do NOT write `[待用户填写]`. |
+| 6 | **硬约束 (Hard Constraints)** | Non-negotiable rules. Omit if empty. |
+| 7 | **生成要求 (Generation Requirements)** | Acceptance criteria. Keep proportional to task size. |
+
+"具体实现要求" is folded into "输出格式" in Medium — list the deliverables and
+describe each one inline rather than in a separate verbose section.
+
+#### High Cognitive Load — Full (8 sections)
+
+For security audits, concurrency, cryptography, EVM/Assembly, complex algorithms,
+multi-step state machines. Use the complete 8-section structure (1. Role, 2.
+Task, 3. Input, 4. Output Format, 5. Format Reference Examples, 6. Detailed
+Implementation Requirements, 7. Hard Constraints, 8. Generation Requirements)
+in this exact order.
+
+#### Iron Rules
+
+- **Never** write `[待用户填写]` or equivalent placeholders. If a section has no substance, skip it.
+- **Never** put examples before Input — the model must know the target before seeing how others did it.
+- **Never** use meta-examples (prompt design examples). Cases must be examples of the **desired output**.
+- **For Few-Shot**: section 5 examples are task-domain pairs (e.g., API request→response), NOT prompt-writing examples.
+- **Let the router decide.** If Step 1 says Low, build minimal — even if the task description sounds elaborate. The router's load judgment is authoritative.
+- After construction, run through `references/prompt-structure-checklist.md` before presenting.
 
 Present the enhanced prompt to the user in a clearly marked code block.
 

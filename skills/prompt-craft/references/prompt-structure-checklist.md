@@ -1,35 +1,44 @@
 # Prompt Structure Checklist
 
 After building an enhanced prompt, verify it covers these elements before presenting
-to the user. Not all elements are required for every task — skip those that don't apply.
+to the user. Sections required depend on the cognitive-load level from Step 1 —
+not all elements apply to every task. Skip any that have no substance.
 
-## Core Elements
+## By Cognitive Load
 
-- [ ] **Role**: Is a clear role assigned? (e.g. "You are a senior Solidity auditor")
-- [ ] **Task**: Is the specific task stated unambiguously?
-- [ ] **Input**: Is the target input (code, data, file) specified?
-- [ ] **Output Format**: Is the desired output structure defined (JSON, Markdown, code block, plain text)?
+### Low Load (≤3 sections)
+- [ ] **Task**: Stated unambiguously in one sentence.
+- [ ] **Input**: Target code, file, or scenario specified.
+- [ ] **Hard Constraints**: Present only if there are real, non-negotiable rules. Omit the entire section otherwise.
 
-## Quality Elements
+Verify: No role, no output format, no examples, no generation requirements.
+These are noise for simple one-line changes.
 
-- [ ] **Hard Constraints**: Are non-negotiable rules explicitly stated (e.g. "do NOT introduce tokenomics analysis")?
-- [ ] **Negative Constraints**: Are forbidden approaches or outputs listed?
-- [ ] **Examples**: If few-shot, are 1-5 input→output (or input→reasoning→output) examples included?
-- [ ] **Reasoning Structure**: If CoT/ToT, is the reasoning→answer format clearly separated?
-- [ ] **Pruning Criteria**: If ToT, are branch evaluation and pruning criteria explicit?
+### Medium Load (5-7 sections)
+- [ ] **Role**: Clear, specific, with domain and tech stack.
+- [ ] **Task**: One sentence.
+- [ ] **Input**: Target data/code/scenario.
+- [ ] **Output Format**: Numbered deliverables. "具体实现要求" folded in per-item — no separate verbose section.
+- [ ] **Format Reference Examples**: Only if cases were generated (Step 2.5) or user-supplied. Skip if neither — do NOT write `[待用户填写]`.
+- [ ] **Hard Constraints**: Non-negotiable rules. Omit if empty.
+- [ ] **Generation Requirements**: Acceptance criteria proportional to task size.
 
-## Context Elements
-
-- [ ] **Irrelevant History Excluded**: For independent high-load tasks, is prior conversation noise omitted?
-- [ ] **Vault Constraints Injected**: Are relevant hard_constraints from the vault included?
-- [ ] **Technique Alignment**: Does the prompt's structure match the selected technique's method_steps?
+### High Load (8 sections)
+- [ ] **Role**
+- [ ] **Task**
+- [ ] **Input**
+- [ ] **Output Format**
+- [ ] **Format Reference Examples**
+- [ ] **具体实现要求 (Detailed Implementation Requirements)**
+- [ ] **硬约束 (Hard Constraints)**
+- [ ] **生成要求 (Generation Requirements)**
 
 ## Technique Alignment
 
-After construction, verify the prompt matches the output template of the selected technique. Each reference file now includes a **Prompt Output Template** section that defines the exact output skeleton.
+After construction, verify the prompt matches the output template of the selected technique. Each reference file includes a **Prompt Output Template** section that defines the exact output skeleton.
 
-- [ ] **Zero-Shot**: Prompt is light (≤100 lines), no examples or reasoning frames. Only 7 sections (section 5 omitted).
-- [ ] **Few-Shot**: Section 5 is "格式参考示例（Few-Shot）" with 2-3 input→output pairs + mapping rule summary box. Examples are task-domain real data, NOT meta-examples of prompt design.
+- [ ] **Zero-Shot**: Prompt is light (≤3 sections). No role, no examples, no reasoning frames. Task + Input + Hard Constraints (only if real).
+- [ ] **Few-Shot**: Medium-load structure. Section 5 is "格式参考示例（Few-Shot）" with 2-3 input→output pairs + mapping rule summary box. Examples are task-domain real data, NOT meta-examples of prompt design.
 - [ ] **Zero-Shot-CoT**: Section 5 is a reasoning skeleton (format hint only, no concrete reasoning content). "先推理 → 再答案" structure.
 - [ ] **Few-Shot-CoT**: Section 5 is "推理模式参考" with 2 input→reasoning→output triples + reasoning pattern migration box.
 - [ ] **Step-Back**: Section 5 contains 2-3 abstraction framework ASCII boxes. Section 6 starts with transition sentence "基于上述抽象框架，实现以下所有功能".
@@ -41,4 +50,7 @@ After construction, verify the prompt matches the output template of the selecte
 - [ ] No generic advice without concrete application ("be careful" without saying HOW).
 - [ ] No hidden reasoning chains that the end-user model can't see.
 - [ ] No mixed unrelated tasks in a single prompt.
+- [ ] **No placeholder sections.** Never write `[待用户填写]` or equivalent. If a section has no substance, skip it.
 - [ ] No implicit assumptions about the user's environment or stack.
+- [ ] No role assignment for Low-load tasks — "You are a senior software engineer" adds zero signal for "rename this variable".
+- [ ] No forced output-format or generation-requirements sections for Low-load tasks.
